@@ -1,0 +1,80 @@
+
+.profil {
+    font-size: medium;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  ion-card {
+    border-left: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    ion-card-content {
+      padding: 32px;
+      background-color: var(--ion-color-secondary);
+      color: #fff;
+      text-align: center;
+
+      img {
+        border-radius: 50%;
+        border: solid 4px var(--ion-color-secondary);
+        display: inline;
+          }
+      }
+  }
+}  
+
+
+ion-item,ion-input,ion-label,ion-button,ion-select,ion-select-option,ion-item-divider{
+  position: relative;
+}
+
+
+ion-item{
+  --background:rgba(241, 243, 247, 0.849);
+  --color:#7F7F7F;
+  border-radius: 10px;
+  margin-top: 5px;
+  ion-label{
+    --color:white !important;
+    font-weight: bolder !important;
+    font-size: 22px !important;
+    padding:5px !important;
+  }
+  ion-input{
+    font-size: medium;
+  }
+}
+
+ion-button{
+  --background: var(--ion-color-primary);
+  height: 50px;
+  --border-radius: 20px !important;
+  font-size: large;
+}
+
+ion-select {
+  min-width: 100%;
+}
+
+ion-item-divider{
+  padding-top: 5px !important;
+  --background: var(--ion-color-primary);
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 20px !important; 
+  text-align: center !important;
+}
+
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    // height: 65px !important;
+    ion-title{
+      font-family: Georgia, 'Times New Roman', Times, serif !important;
+      font-size: larger;
+    }
+    ion-icon{
+      color: white;
+    }
+}
+
+
+

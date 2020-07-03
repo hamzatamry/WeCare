@@ -1,0 +1,112 @@
+.not-working{   
+    background-image: url("../../../../../../../../assets/state.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.heartBeats{
+    background-image: url("../../../../../../../../assets/heartBeats.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50% 50%;
+}
+
+.steps{
+    background-image: url("../../../../../../../../assets/wf.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90%;
+}
+
+h1 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: var(--ion-color-primary) ;
+    text-align: center;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.days {
+    --background: var(--ion-color-primary) !important;
+    ion-segment-button {
+        --background-checked : var(--ion-color-secondary) !important;
+        
+    }
+}   
+
+h2 {
+    color: black;
+    font-weight: bold;
+    
+}
+
+
+ion-grid {
+    margin: 0 !important;
+    padding: 0 !important;
+    ion-row {
+        ion-col {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            color: var(--ion-color-primary);
+            border: 2px var(--ion-color-primary) solid;
+            border-radius: 5px;
+            background-color:  white ;
+            text-align: center;
+            font-size: smaller;
+            font-weight: normal;
+            img {
+                height: 40px;
+            }
+        }
+    }
+}
+
+
+
+ion-item {
+
+    ion-label {
+        color:  var(--ion-color-primary) !important;
+    }
+    ion-toggle {
+        border-radius: 20px;
+        background-color: var(--ion-color-primary) !important;
+    }
+}
+
+ion-label {
+    color: white !important;
+}
+
+ion-card {
+    width: 80% !important;
+    padding: 0 !important;
+    margin: 10% !important;
+}
+
+
+ion-content {
+    
+    --background: linear-gradient(to top right , var(--ion-color-secondary), rgb(251, 248, 248));
+}
+
+ion-slides {
+    padding: 0px !important;
+    --bullet-background: blue;
+}
+
+
+
+
+img {
+    height: 250px;
+}
+
+
+
+
+    

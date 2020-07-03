@@ -1,0 +1,169 @@
+<ion-header>
+  <ion-toolbar class="ion-text-center">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/patient/tabs/home"></ion-back-button>
+    </ion-buttons>
+    
+    <ion-title color="secondary" style="text-align: center;" >Profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="secondary" (click)="noEditing=!noEditing; selectedImage = null; imageData = null;"> 
+        <ion-icon name="create"></ion-icon> 
+      </ion-button>
+    </ion-buttons>
+    <ion-progress-bar *ngIf="isFetching" color="dark" type="indeterminate"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content *ngIf="!isFetching" class="profil" style="text-align: center;">
+  
+  <ion-card>
+    <ion-card-content class="bg-profil">
+      <img *ngIf="noEditing" [src]="patient.imagePath ? patient.imagePath : 'assets/' + patient.sex + '.png'" style="width: 220px !important; height: 220px !important; object-fit: cover;">
+      <app-image-picker (imagePick)="onImagePicked($event)" *ngIf="!noEditing && !selectedImage"></app-image-picker>
+      <img *ngIf="!noEditing && imageData" [src]="imageData" style="width: 220px !important; height: 220px !important; object-fit: cover;">
+      <h1>{{patient.lastName + " " + patient.firstName}}</h1>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid fixed no-padding>
+    <ion-row>
+      <ion-col size="12" padding>
+
+        <form #f="ngForm" (ngSubmit)="onSubmit()">
+          <ion-list margin-bottom>
+            
+            <!-- Identité -->
+            <ion-item-group>
+              <ion-item-divider color ="secondary">
+                <ion-label>Identity</ion-label>
+              </ion-item-divider>
+              
+              <!-- champ de saisie du nom -->
+              <ion-item>
+                <ion-label color="dark" position="stacked">Last name:</ion-label>
+                <ion-input type="text" name="nom" #nom="ngModel"
+                maxlength="20" pattern="[a-zA-Z\s]*[a-zA-Z]"
+                required [(ngModel)]="patient.lastName" 
+                placeholder="Entrez votre nom" [readonly]="noEditing">
+                </ion-input>
+                <label *ngIf="!nom.valid" style="color: red;">          
+                  Your last name should only contain letters
+                </label>
+              </ion-item>
+              
+              
+              <!-- champ de saisie du prenom -->
+              <ion-item>
+                <ion-label color="dark" position="stacked">First name:</ion-label>
+                <ion-input 
+                  type="text" name="prenom" maxlength="20" 
+                  pattern="[a-zA-Z\s]*[a-zA-Z]" #prenom="ngModel"
+                  required [(ngModel)]="patient.firstName" 
+                  placeholder="Entrez votre prénom" 
+                  [readonly]="noEditing">
+                </ion-input>
+                <label *ngIf="!prenom.valid" style="color: red;">
+                  Your first name should only contain letters
+                </label>
+              </ion-item>
+              
+              <!-- champ d'affichage de l'age apres calcul -->
+              <ion-item>
+                <ion-label color="dark" position="stacked">Age:</ion-label>
+                <ion-input 
+                [value]="age" 
+                type="text" 
+                placeholder="Entrez votre age" 
+                name="age" [disabled]="true"
+                readonly></ion-input>
+              </ion-item>
+              
+              <!-- champ de saisie de la date -->
+              <ion-item>
+                <ion-label color="dark" position="stacked">Birthday:</ion-label>
+                <ion-datetime  name="date" [readonly]="noEditing" [(ngModel)]="this.patient.birthday" (ionChange)="setDateAndAge()" displayFormat="DD/MM/YYYY" min="1920-01-01" [max]="currentDate"></ion-datetime>
+              </ion-item>
+
+              <!-- champ de selection du sexe -->
+              <ion-item>
+                <ion-label color="dark" position="stacked">Sex:</ion-label>
+                <ion-select name="sexe" [disabled]="noEditing" [(ngModel)]="patient.sex">
+                  <ion-select-option value="m">Man</ion-select-option>
+                  <ion-select-option value="f">Women</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-item-group>
+
+            <!-- coordonnées et localisation -->
+            <ion-item-group>
+              <ion-item-divider color ="secondary">
+                <ion-label>Contact information</ion-label>
+              </ion-item-divider>
+              
+              <!-- champ d'affichage de l'email -->
+              <ion-item>
+                <ion-label color="dark" position="stacked">Email:</ion-label>
+                <ion-input name="email" [value]="email" type="email"
+                email readonly [disabled]="true" placeholder="Ex.: joe@doe.com"></ion-input>
+              </ion-item>
+              
+              <!-- champ de saisie du numero de telephone -->
+              <ion-item>  
+                <ion-label color="dark" position="stacked">Phone number:</ion-label>
+                <ion-input name="telephone" [(ngModel)]="patient.phoneNumber" #telephone="ngModel"
+                type="text" required pattern="[0-9]{4,10}"
+                placeholder="Ex.: 694865043"  
+                [readonly]="noEditing">
+                  {{ countries[index] && countries[index].code}}&nbsp;</ion-input>
+                <label *ngIf="!telephone.valid" style="color: red;">
+                  Your phone cannot exceed 10 digits
+                </label>
+              </ion-item>
+              
+              <!-- champ de saisie du pays -->
+              <ion-item>  
+                <ion-label color="dark" position="stacked">Pays:</ion-label>
+                <ion-select name="pays" #countryIndex [disabled]="noEditing" 
+                [(ngModel)]="index" 
+                (ionChange)="patient.country=countries[countryIndex.value].name;index=countryIndex.value;" >
+                  <ion-select-option *ngFor="let country of countries; index as i" 
+                  [value]="i">{{country.name}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+              
+              <!-- champ de saisie de l'adresse -->
+              <ion-item>    
+                <ion-label color="dark" position="stacked">Location:</ion-label>
+                <ion-input ngModel name="adresse" required
+                [(ngModel)]="patient.address" #adresse="ngModel"
+                type="text" placeholder="Ex.: ..." 
+                [readonly]="noEditing" >
+              </ion-input>
+                <label *ngIf="!adresse.valid" style="color: red;">
+                  Must not contain special characters except the space character
+                  and comma 
+                </label>
+              </ion-item>
+
+              <!-- champ de l'image de localisation -->
+              <ion-item *ngIf="!noEditing">
+                <ion-img role="button" (click)="onShowMap()" *ngIf="patient.staticMapImageUrl && noEditing" [src]="patient.staticMapImageUrl"></ion-img>
+                <app-location-picker (locationPick)="onLocationPicked($event)" style="width: 100%;" ></app-location-picker>
+              </ion-item>
+            </ion-item-group>
+          </ion-list>
+
+          <!-- boutton de submit -->
+          <ion-button 
+          [disabled]="noEditing || !f.valid" type="submit" 
+          size="large" expand="full" 
+          color="secondary"  no-margin>Save
+          </ion-button>
+          
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

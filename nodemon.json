@@ -1,0 +1,12 @@
+{
+    "env": {
+        "MONGO_ATLAS_USER": "pfa1A_test",
+        "MONGO_ATLAS_PW": "DWv1AOKiRbtMX7vu",
+        "ONESIGNAL_REST_KEY": "ZTVhOWY0ZDMtYzJjZi00MmYwLThiMTQtZTlmNmQwNTJlYWRk",
+        "APP_ID": "4d85abb8-80b5-45e4-aaec-d803ccebc7da",
+        "GMAIL_USER": "healthappverifier@gmail.com",
+        "GMAIL_PASS": "zLg@9s.]JMaSvz)B",
+        "JWT_ACCESS_KEY": "jdH6aAty15Mcnpo4VWBVUE66ZZSwtgc0xtBPt-USyBEf2m6VdSq_Qb3Xpp7sszDR",
+        "JWT_REFRESH_KEY": "joxNTE2MjM5MDIyfQ-SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5cSwtgc"
+    }
+}

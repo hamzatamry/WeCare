@@ -1,0 +1,86 @@
+.profile
+{
+  background-image: url("../../../../../assets/profile.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 150% 100%;
+  background-position-y: 20px;
+}
+
+.physic 
+{
+  background-image: url("../../../../../assets/physicData.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 150% 100%;
+  background-position-y: 10px;
+}
+
+.sensorData 
+{
+  background-image: url("../../../../../assets/sensorData.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 120% 100%;
+  background-position-y: 20px;
+}
+
+.docteur-coach-list
+{
+  background-image: url('../../../../../assets/doctorList.jpg'); 
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 150% 90%;
+  background-position-y: 20px;
+  
+}
+
+
+ion-icon {
+    font-size: 2rem;
+    color: white;
+  }
+
+ion-content {
+  --background: linear-gradient(to bottom , var(--ion-color-primary), rgb(251, 248, 248));
+
+  ion-grid {
+    height: 100%;
+    ion-row {
+      height: 50% !important;
+
+      ion-col {
+        height: 100% !important;
+        ion-card {
+          
+          text-align: center !important;
+          width: 100% !important;
+          height: 100% !important;
+          margin: 0 !important;
+
+          ion-card-title {
+            color: var(--ion-color-primary);
+            
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            margin-top: 10%;
+
+            background-image: url("../../../../../assets/white.jpg") !important;
+            background-position: center !important;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+          }
+
+          
+            
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+

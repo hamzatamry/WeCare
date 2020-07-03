@@ -1,0 +1,204 @@
+<!-- l'en tete de la page -->
+<ion-header>
+  <!-- barre d'outil contenant les differents bouttons et un titre -->
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- boutton de retour vers la page d'accueil mise au début tout à gauche -->
+      <ion-back-button defaultHref="/patient/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <!-- titre de la page centré est écrit en primary -->
+    <ion-title style="text-align: center;" color="primary">Doctor list</ion-title>
+    <ion-buttons *ngIf="!(doctorCoachList.length <= 0)" slot="end">
+      <!-- boutton d'affichage de la barre de recherche mise à la fin tout à droite -->
+      <ion-button (click)="searchBarShown=!searchBarShown;searchBarValue='';adddoctorCoachShown=false;">
+        <!-- 
+          searchBarValue='' pour afficher tous les doctorCoachs de la liste en cas
+          de clique sur le boutton d'affichage de la barre de recherche
+        -->
+        <!-- icon sous forme d'une loupe -->
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-progress-bar *ngIf="isFetching" color="dark" type="indeterminate"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<!-- contenu de la page -->
+<ion-content *ngIf="!isFetching" #content>
+  
+
+  <!-- barre de recherche fixé en cas de scrolling (slot="fixed") -->
+  <ion-searchbar #searchbar *ngIf="searchBarShown"  (input)="searchBarValue = searchbar.value" slot="fixed" ></ion-searchbar>
+    
+  <!-- ajouter de l'espace entre le premier element de la liste et entre la barre de recherche si elle apparut -->
+  <div *ngIf="searchBarShown">
+    <br/>
+    <br/>
+    <br/>
+  </div>
+
+  <!-- segment qui permet de voir soit la liste des docteurs ou coachs qui ont confirmé ou les demandes en attente-->
+  <ion-segment #segment value="true" (ionChange)="segment.value == 'true' ? confirmedDoctorList = true: confirmedDoctorList = false">
+    <ion-segment-button value="true">
+      <ion-label>Confirmed</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="false">
+      <ion-label>Requests</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-fab *ngIf="!confirmedDoctorList" vertical="bottom" horizontal="end" slot="fixed">
+    <!-- boutton d'ajout d'un nouveau doctorCoach avec un scrolling vers le debut de la liste -->
+    <ion-fab-button  [disabled]="searchBarShown" (click)="adddoctorCoachShown = !adddoctorCoachShown; content.scrollToTop();">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab *ngIf="atLeastOneConfirmed() && confirmedDoctorList" vertical="bottom" horizontal="start" slot="fixed">
+    <!-- boutton d'affichage ou nn des checkbox -->
+    <ion-fab-button [disabled]="!confirmedDoctorList" (click)="checkZone=!checkZone; checkZone ? checkBoxWithRouter=undefined: checkBoxWithRouter= 'ordonnance'" color="danger">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab *ngIf="checkZone && atLeastOneConfirmed() && confirmedDoctorList" vertical="bottom" horizontal="end" slot="fixed">
+    <!-- boutton de suppression des doctorCoachs selectionnes -->
+    <ion-fab-button color="danger" (click)="presentAlertConfirm();">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        
+        <!-- item qui joue le role d'un boutton qui permet de selectionner tous les checkBox -->
+        <ion-item *ngIf="checkZone && !searchBarShown && atLeastOneConfirmed() && confirmedDoctorList" (click)="checkAll = !checkAll;" button color="primary" style="text-align: center;">
+          <ion-label>Select all</ion-label>
+        </ion-item>
+
+        <form #f="ngForm" (ngSubmit)="onSubmit()">
+          <!-- le champ de saisie d'un nouveau docteur ou coach qui sera ajouté à la liste -->
+          <ion-card *ngIf="adddoctorCoachShown && !confirmedDoctorList" class="ion-margin">
+            <!-- le champ de saisie du nom -->
+            <ion-item>
+              <ion-label color="primary" position="stacked">Last name :</ion-label>
+              <ion-input type="text" name="nom" #nom="ngModel" 
+                [(ngModel)]="requestToDoctorCoach.lastName" pattern="[a-zA-Z\s]*[a-zA-Z]"
+                required maxlength="20"
+              >
+              </ion-input>
+              <label *ngIf="!nom.valid && nom.touched" style="color: red;">   
+                  last name must contain only letters
+              </label>
+            </ion-item>
+            
+            <!-- le champ de saisie du prenom -->
+            <ion-item>
+              <ion-label color="primary" position="stacked" >First name</ion-label>
+              <ion-input #prenom="ngModel" name="prenom" pattern="[a-zA-Z\s]*[a-zA-Z]"
+              type="text" required maxlength="20" [(ngModel)]="requestToDoctorCoach.firstName"
+              ></ion-input>
+              <label *ngIf="!prenom.valid && prenom.touched" style="color: red;">
+                first name must contain only letters
+              </label>
+            </ion-item>
+
+            <!-- le champ de selection du type (docteur ou coach) -->
+            <ion-item>
+              <ion-label color="primary" position="stacked">Profession</ion-label>
+              <ion-select #profession="ngModel" name="type" required
+              [(ngModel)]="requestToDoctorCoach.role"
+              >
+                <ion-select-option value="doctor">Doctor</ion-select-option>
+                <ion-select-option value="coach">Coach</ion-select-option>
+              </ion-select>
+              <label *ngIf="!profession.valid && profession.touched" style="color: red;">
+                  Select profession
+              </label>
+            </ion-item>
+            
+
+            <!-- le champ de selection de specialite du medecin ou coach -->
+            <ion-item *ngIf="requestToDoctorCoach.role != undefined"> <!-- si le patient a remplit la profession -->
+              
+              <ion-label color="primary" position="stacked">Specialty</ion-label>
+
+              <ion-select name="specialite" [(ngModel)]="requestToDoctorCoach.specialty" 
+              required #specialite="ngModel"
+              >
+                <!-- en cas ou la profession choisit est medecin -->
+                <ng-container *ngIf="requestToDoctorCoach.role == 'doctor'">
+                  <ion-select-option *ngFor="let speciality of doctorSpecialities" [value]="speciality">{{speciality}}</ion-select-option>
+                  <ion-select-option value="Other">Other</ion-select-option>
+                </ng-container>
+
+                <!-- en cas ou la profession choisit est coach -->
+                <ng-container *ngIf="requestToDoctorCoach.role == 'coach'">
+                  <ion-select-option *ngFor="let speciality of coachSpecialities" [value]="speciality" required>{{speciality}}</ion-select-option>
+                  <ion-select-option value="Other">Other</ion-select-option>
+                </ng-container>
+              </ion-select>
+              <label *ngIf="!specialite.valid && specialite.touched" style="color: red;">
+                  Select the specialty
+              </label>
+            </ion-item>
+              
+            <!-- le champ de saisie de date de naissance -->
+            <ion-item>
+              <ion-label color="primary" position="stacked">Birthday</ion-label>
+              <ion-datetime #date="ngModel" displayFormat="DD/MM/YY" name="dateNaissance" required 
+              [(ngModel)]="requestToDoctorCoach.birthday" min="1920-01-01" [max]="currentDate"></ion-datetime>
+              <label *ngIf="!date.valid && date.touched" style="color: red;">
+                  Choose the date of birth
+              </label>
+            </ion-item>
+          
+            <!-- le boutton d'ajout apres clique le doctorCoach s'ajoute a la liste puis le champ de saisie disparait -->
+            <ion-item >
+              <ion-button [disabled]="!f.valid" type="submit" fill="outline" color="danger" slot="end" >Add</ion-button>
+            </ion-item>
+          </ion-card>
+        </form>
+        
+
+        <!-- liste des doctorCoachs -->
+        <ion-list [inset]="true" lines="full">
+
+          <!-- iterer sur la liste des doctorCoachs -->
+          <ng-container *ngFor="let doctorCoach of doctorCoachList; index as doctorCoachIndex">
+
+            <!-- afficher que les doctorCoachs selectionnés s'il y a une selection sinon on affiche tous les doctorCoachs -->
+            <ion-item [disabled]="!doctorCoach.confirmed" (click)="change_doctorId(doctorCoach.dc._id)" [routerLink]="[checkBoxWithRouter, doctorCoach.dc.profile.firstName, doctorCoach.dc.profile.lastName]" *ngIf="doctorCoach.dc && (doctorCoach.dc.profile.lastName + ' ' + doctorCoach.dc.profile.lastName).toLowerCase().indexOf(searchBarValue.toLowerCase()) > -1 && (doctorCoach.confirmed == confirmedDoctorList)">
+              <ion-avatar  slot="start">
+                <img *ngIf="doctorCoach.dc.profile.sex != undefined" src="./assets/{{doctorCoach.dc.profile.sex}}.png">
+                <img *ngIf="doctorCoach.dc.profile.sex == undefined" src="./assets/inconnu.jpg">
+              </ion-avatar>
+
+              <!-- affichage des checkbox et changement d'etat du checkBox soit coche ou decoche -->
+              <ion-checkbox #checkbox [checked]="checkAll" *ngIf="checkZone && doctorCoach.confirmed"  (ionChange)="change(checkbox.checked, doctorCoachIndex);" slot="end"></ion-checkbox>
+              <ion-label>
+                <h1 style="font-size: large; font-weight: 600;">{{doctorCoach.dc.profile.lastName}} {{doctorCoach.dc.profile.firstName}}</h1>
+                <h2>{{doctorCoach.dc.role}} {{doctorCoach.dc.profile.specialty}}</h2>
+                <h3>{{doctorCoach.dc.profile.birthday}}</h3>
+                <h4>{{doctorCoach.dc.email}}</h4>
+                <h6>{{doctorCoach.dc.profile.phoneNumber}}</h6>
+                <h6>{{ doctorCoach.dc.geolocation && doctorCoach.dc.geolocation.address}}</h6>
+              </ion-label>
+              <ion-spinner *ngIf="!doctorCoach.confirmed" name="lines-small"></ion-spinner>
+              <ion-icon style="color: green;" *ngIf="doctorCoach.confirmed" name="checkmark-circle-outline"></ion-icon>
+            </ion-item>
+          </ng-container>
+        </ion-list> 
+        
+        <!-- ajouter de l'espace entre le dernier element de la liste et les deux fabs -->
+        <div>
+          <br/>
+          <br/>
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

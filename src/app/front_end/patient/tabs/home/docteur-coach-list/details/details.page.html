@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot='end'>
+      <ion-button fill="outline" (click)="close()">
+        <ion-icon slot='end' name="close-outline"></ion-icon>
+        <ion-label>close</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <h1 style="text-align: center;">
+    <ion-icon name="calendar-outline"></ion-icon>&nbsp;{{prescriptionInfo.prescription.consultationDate.toDateString()}}
+  </h1>
+  <h3 style="text-align: center;">
+    <ion-icon slot="start" name="person"></ion-icon>&nbsp;{{prescriptionInfo.dcIdentity}}
+  </h3>
+
+  <ion-list>
+    <ion-list-header color="secondary" style='text-align: center;'>
+      <ion-label>Situation</ion-label>
+    </ion-list-header>
+    <ion-item style="padding: 10px 10px ;">
+      <ion-icon  name="medical"></ion-icon>
+      <ion-label style="padding-left: 10px;">{{prescriptionInfo.prescription.situation}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header color="secondary" style='text-align: center;'>
+      <ion-label>Médicaments</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let med of prescriptionInfo.prescription.medication">
+      <ion-icon name="pencil"></ion-icon>
+      <ion-label style="padding-left: 10px;"> {{med}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header color='secondary' style='text-align: center;'>
+      <ion-label>Détails</ion-label>
+    </ion-list-header>
+    <ion-item style="padding: 10px 10px ;">
+      <ion-text>{{prescriptionInfo.prescription.details}}</ion-text>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+  

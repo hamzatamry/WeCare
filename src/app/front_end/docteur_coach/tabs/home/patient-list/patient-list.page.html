@@ -1,0 +1,123 @@
+<!-- l'en tete de la page -->
+<ion-header>
+  <!-- barre d'outil contenant les differents bouttons et un titre -->
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <!-- boutton de retour vers la page d'accueil mise au début tout à gauche -->
+      <ion-back-button defaultHref="/docteur_coach/tabs/home"></ion-back-button>
+    </ion-buttons>
+
+    <!-- titre de la page centré est écrit en primary -->
+    <ion-title style="text-align: center;" color="primary">Patient list</ion-title>
+
+    <ion-buttons *ngIf="(patientList.length != 0)" slot="end">
+      <!-- boutton d'affichage de la barre de recherche mise à la fin tout à droite -->
+      <ion-button (click)="searchBarShown=!searchBarShown;searchBarValue='';addPatientShown=false;">
+        <!-- 
+          searchBarValue='' pour afficher tous les patients de la liste en cas
+          de clique sur le boutton d'affichage de la barre de recherche
+        -->
+        <!-- icon sous forme d'une loupe -->
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-progress-bar *ngIf="isFetching" color="dark" type="indeterminate"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<!-- contenu de la page -->
+<ion-content>
+  
+  
+  <!-- barre de recherche fixé en cas de scrolling (slot="fixed") -->
+  <ion-searchbar #searchbar *ngIf="searchBarShown"  (input)="searchBarValue=searchbar.value" slot="fixed" ></ion-searchbar>
+  
+  <!-- ajouter de l'espace entre le premier element de la liste et entre la barre de recherche si elle apparut -->
+  <div *ngIf="searchBarShown">
+    <br/>
+    <br/>
+    <br/>
+  </div>
+
+  <!-- segment qui permet le choix entre la liste des patients confirmés et la liste des demandes -->
+  <ion-segment #segment value="true" (ionChange)="segment.value=='true'? confirmOrDemandList=true:confirmOrDemandList=false">
+    <ion-segment-button value="true">Confirmed</ion-segment-button>
+    <ion-segment-button value="false">Requests</ion-segment-button>
+  </ion-segment>
+
+  <ion-fab *ngIf="atLeastOneConfirmed() && confirmOrDemandList" vertical="bottom" horizontal="start" slot="fixed">
+    <!-- boutton d'affichage ou nn des checkbox -->
+    <ion-fab-button (click)="checkZone=!checkZone; checkZone ? checkBoxWithRouter=undefined: checkBoxWithRouter='patient-data'" color="danger">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab *ngIf="checkZone && atLeastOneConfirmed() && confirmOrDemandList" vertical="bottom" horizontal="end" slot="fixed">
+    <!-- boutton de suppression des patients selectionnes -->
+    <ion-fab-button color="danger" (click)="presentAlertConfirm();">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+
+        <!-- item qui joue le role d'un boutton qui permet de selectionner tous les checkBox -->
+        <ion-item *ngIf="checkZone && !searchBarShown && atLeastOneConfirmed() && confirmOrDemandList" (click)="checkAll=!checkAll" button color="primary" style="text-align: center;">
+          <ion-label>select all</ion-label>
+        </ion-item>
+
+        <!-- liste des patients -->
+        <ion-list [inset]="true" lines="full">
+
+          <!-- iterer sur la liste des patients -->
+          <ng-container *ngFor="let patient of patientList; index as patientIndex">
+            
+            <ion-item-sliding #slide *ngIf="confirmOrDemandList == patient.confirmed" >
+
+              <ion-item-options *ngIf="!patient.confirmed" side="start">
+                <ion-item-option (click)="this.alertMessage = 'Please confirm the addition of the patient'; acceptOrRejectPatientAlert(slide, patientIndex);" color="secondary">
+                  <ion-icon name="person-add-outline"></ion-icon>
+                </ion-item-option>
+                <ion-item-option (click)="this.alertMessage = 'Please confirm patient rejection';acceptOrRejectPatientAlert(slide, patientIndex)" color="danger">
+                  <ion-icon name="person-remove-outline"></ion-icon>
+                </ion-item-option>
+              </ion-item-options>
+
+              <!-- afficher que les patients selectionnés s'il y a une selection sinon on affiche tous les patients -->
+              <ion-item *ngIf="patient.patient && (patient.patient.profile.lastName + ' ' + patient.patient.profile.firstName).toLowerCase().indexOf(searchBarValue.toLowerCase()) > -1" [disabled]="!patient.confirmed" (click)="changePatient_id(patient.patient._id)" [routerLink]="[checkBoxWithRouter, patient.patient.profile.lastName, patient.patient.profile.firstName]" >
+                <ion-avatar slot="start">
+                  <img *ngIf="patient.patient.profile.sex != undefined" src="./assets/{{patient.patient.profile.sex}}.png">
+                  <img *ngIf="patient.patient.profile.sex == undefined" src="./assets/inconnu.jpg">
+                </ion-avatar>
+
+                <!-- affichage des checkbox et changement d'etat du checkBox (soit coche ou decoche) -->
+                <ion-checkbox #checkbox [checked]="checkAll" *ngIf="checkZone && patient.confirmed"  (ionChange)="change(checkbox.checked, patientIndex);" slot="end"></ion-checkbox>
+                <ion-label>
+                  <h1 style="font-size: large; font-weight: 600;">{{patient.patient.profile.lastName}} {{patient.patient.profile.firstName}}</h1>
+                  <h3>{{patient.patient.profile.birthday}}</h3>
+                  <h4>{{patient.patient.email}}</h4>
+                  <h6>{{patient.patient.profile.phoneNumber}}</h6>
+                  <h6>{{patient.patient.profile.address}}</h6>
+                </ion-label>
+                <ion-icon style="color: green;" *ngIf="patient.confirmed" name="checkmark-circle-sharp"></ion-icon>
+                <ion-icon color="primary" *ngIf="!patient.confirmed" name="person-outline"></ion-icon>
+              </ion-item>
+
+            </ion-item-sliding>
+          </ng-container>
+        </ion-list> 
+        
+        <!-- ajouter de l'espace entre le dernier element de la liste et les deux fabs -->
+        <div>
+          <br/>
+          <br/>
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

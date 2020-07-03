@@ -1,0 +1,55 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" color="#ff5b2c">
+      <ion-button class="back-button" (click)="goBack()" slot="icon-only">Back
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding="true">
+  <ion-avatar>
+    <ion-img src="../../assets/coeur.jpg"></ion-img>
+    <ion-title class="ion-text-center">
+      Sign in
+    </ion-title>
+  </ion-avatar>
+
+    <form  #form="ngForm" class="loginform" (ngSubmit)="onFormSubmit(form)">
+      <ion-grid>
+        <ion-row justify-content-center>
+          <ion-col align-self-center>
+            <div padding>
+              <ion-label for="role">I am a</ion-label>
+              <ion-item>
+                <ion-select ngModel name="role" required placeholder="Select one" interface="action-sheet">
+                  <ion-select-option value="patient">Patient</ion-select-option>
+                  <ion-select-option value="doctor">Doctor</ion-select-option>
+                  <ion-select-option value="coach">Coach</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <br>
+              <ion-label for="email">Email</ion-label>
+              <ion-item>
+                <ion-input name="email" type="email" placeholder="your@email.com" ngModel autocomplete required email></ion-input>
+              </ion-item>
+              <br>
+              <ion-label for="password">Password</ion-label>
+              <ion-item> 
+                <ion-input name="password" type="password" placeholder="Password" password autofill minlength="6" ngModel required></ion-input>
+              </ion-item>
+            </div>
+            <br>
+            <div padding>
+              <ion-button type="submit" [disabled]="!form.valid" expand="block">Login</ion-button>
+            </div>
+            <div class="textdown">
+              <a routerLink="/login/forg-pass"><p class="forgot">Forgot your password ?</p></a>
+              <hr>
+              <p>Don't have an account ? <a routerLink="/register" class="create">Create one !</a></p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+</ion-content>

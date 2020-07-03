@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Count down</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="none"  class="ion-text-center" style="margin-top: 10%;">
+    <ion-label style="font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif; font-size: xx-large; color: var(--ion-color-primary);">
+      Welcome Back!
+    </ion-label>
+  </ion-item>
+
+  <ion-item *ngIf="timeLeft" lines="none" class="ion-text-center">
+    <ion-text style="font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif; font-size: 20px; color: rgba(155, 155, 155, 0.795);">
+      We will notify you once we're ready for a new sample.
+    </ion-text>
+  </ion-item>
+  <ion-item [button]="!timeLeft" (click)="timeLeft == undefined ? sample(): noSample()" lines="none" style="margin-top: 15%; margin-left: 10%; margin-right: 10%; margin-bottom: 0% !important">
+    <circle-progress
+      [percent]="percentage"
+      [title]="timeoutView"
+      [titleFontSize]="!timeoutView.includes('Sample') ? '18' : '13'"
+      subtitle="Until Next Sample"
+      [showSubtitle]="!timeoutView.includes('Sample') ? true : false">
+    </circle-progress>
+  </ion-item>
+
+</ion-content>
+
+
+

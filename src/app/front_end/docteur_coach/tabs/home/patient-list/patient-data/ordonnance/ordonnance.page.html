@@ -1,0 +1,134 @@
+<ion-progress-bar color="dark" *ngIf="isFetching" type="indeterminate" ></ion-progress-bar>
+<ion-content #content *ngIf="noDataFound">
+  <img src="../../../../../assets/ordonnance.png">
+  <h1 style="text-align: center;">No Prescription Found !!!</h1>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="secondary" (click)='showNewPresc()'>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+
+</ion-content>
+<ion-content *ngIf="!isFetching && !noDataFound" style="text-align: center;" #content padding class='ordonnance'>
+  <img src="../../../../../assets/ordonnance.png">
+  <ion-item style="display: none">
+    <ion-datetime #date placeholder='Select date' [(ngModel)]="prescriptionDate" min="1920-01-01"
+      [max]="today.toISOString()"></ion-datetime>
+  </ion-item>
+
+
+  <ion-button class='ion-padding' (click)="date.open()" fill='outline'>
+    <ion-icon name='calendar'></ion-icon>
+    <ion-label>&nbsp;Select Date</ion-label>
+  </ion-button>
+  <ion-button class='ion-padding' *ngIf="prescriptionDate != '' " (click)="prescriptionDate= ''" fill='outline'>
+    <ion-icon name='close-outline'></ion-icon>
+  </ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+
+        <!----------------------------------card d'ajout de prescription ------------------------------------->
+        <form #f="ngForm" (ngSubmit)="presentAlertConfirm()">
+          <ion-card *ngIf="addPres" style="text-align: center;">
+            <ion-card-title>
+              <ion-icon name="calendar-outline"></ion-icon>
+              <ion-label style="padding : 10px 10px">{{today.toDateString()}}</ion-label>
+            </ion-card-title>
+
+            <ion-card-content>
+              <ion-list>
+                <ion-list-header color="secondary">
+                  <ion-label>Situation or illness</ion-label>
+                </ion-list-header>
+                <ion-item>
+                  <ion-input #situation="ngModel" name="situation" type="text" [(ngModel)]="newPrescription.situation"
+                    required pattern="[a-zA-Z\séèàç]*" placeholder="enter illness or case"></ion-input>
+                </ion-item>
+              </ion-list>
+              <ion-list>
+                <ion-list-header color="secondary">
+                  <ion-label>Drugs List</ion-label>
+                </ion-list-header>
+
+                <ion-item>
+                  <ion-input #input="ngModel" #focus name="drugs" [(ngModel)]="drugName" type="text"
+                    pattern="[a-zA-Z0-9\séèà]*" placeholder="enter drug's name"></ion-input>
+                  <ion-button slot='end' (click)="addDrug();focus.setFocus()" fill='clear'>
+                    <ion-icon name='add'></ion-icon>
+                  </ion-button>
+                </ion-item>
+
+                <ng-container *ngIf="newPrescription.medication.length > 0">
+                  <ion-item *ngFor="let drug of newPrescription.medication;index as i">
+                    <ion-label>{{drug}}</ion-label>
+                    <ion-button slot='end' (click)='removeDrug(i)' fill='clear'>
+                      <ion-icon name="close-outline"></ion-icon>
+                    </ion-button>
+                  </ion-item>
+                </ng-container>
+              </ion-list>
+
+              <ion-list>
+                <ion-list-header color='secondary'>
+                  <ion-label>Details</ion-label>
+                </ion-list-header>
+
+                <ion-item>
+                  <ion-textarea [(ngModel)]='newPrescription.details' #details="ngModel" inputmode="textarea"
+                    maxlength="200" name="details" required
+                    placeholder="enter more information you may think useful to the patient "></ion-textarea>
+                </ion-item>
+                <div style="text-align: right;">
+                  <ion-button (click)="showNewPresc()" color="danger" fill='outline'>Cancel</ion-button>
+                <ion-button [disabled]="!f.valid" color="primary" type="submit" fill="outline">ADD</ion-button>
+              </div>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </form>
+
+        <!----------------------------------------- Liste des prescriptions ------------------------------------->
+        <ion-list [inset]='true' lines='full'>
+          <ion-list-header style='text-align: center;' color='secondary'>Prescriptions History</ion-list-header>
+          <ng-container *ngFor="let presc of prescriptionsList;index as i">
+            <ion-item button *ngIf='presc.consultationDate.toISOString().indexOf(prescriptionDate.substring(0,10)) > -1'
+              (click)='presentPrescription(i)'>
+              <ion-avatar>
+                <img src="../../../../../assets/prescription.jpg">
+              </ion-avatar>
+
+              <ion-label>
+                <h1 style="font-size: large; font-weight: 600;">&nbsp;{{presc.consultationDate.toDateString()}}</h1>
+                <h3>&nbsp;Situation:{{presc.situation}}</h3>
+                <h3>&nbsp;Drugs: click to see more...</h3>
+              </ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <!-------------------------------------------- fab de scrolling au top --------------------------------------->
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="secondary" (click)='content.scrollToTop()'>
+      <ion-icon name="chevron-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+
+  <!-------------------------------------------- fab d'affichage du card d'ajout ---------------------------->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="secondary" (click)='showNewPresc()'>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <div>
+    <br />
+    <br />
+  </div>
+</ion-content>

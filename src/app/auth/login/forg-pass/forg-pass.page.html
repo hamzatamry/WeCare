@@ -1,0 +1,46 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" color="#ff5b2c">
+      <ion-button class="back-button" (click)="goBack()" slot="icon-only">Back
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <ion-avatar>
+    <ion-img src="../../assets/mdpoubl.png"></ion-img>
+  </ion-avatar>
+  <ion-title class="ion-text-center">
+    Reset Password
+  </ion-title>
+
+    <form #form="ngForm" class="resetpass" (ngSubmit)="onSubmit(form)">
+      <ion-grid>
+        <ion-row justify-content-center>
+          <ion-col align-self-center>
+            <div padding>
+              <br>
+              <ion-label for="role">I am a</ion-label>
+              <ion-item>
+                <ion-select ngModel required name="role" placeholder="Select one" interface="action-sheet">
+                  <ion-select-option value="patient">Patient</ion-select-option>
+                  <ion-select-option value="doctor">Doctor</ion-select-option>
+                  <ion-select-option value="coach">Coach</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <br>
+              <ion-label for="email">Email</ion-label>
+              <ion-item>
+                <ion-input name="email" type="email" placeholder="your@email.com" ngModel required email></ion-input>
+              </ion-item>
+            </div>
+            <br>
+            <div padding>
+              <ion-button type="submit" [disabled]="!form.valid" expand="block">Send</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+</ion-content>

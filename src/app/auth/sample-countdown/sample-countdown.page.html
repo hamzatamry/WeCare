@@ -1,0 +1,9 @@
+<div style="height: 100%; width: 80%; margin: 10%; margin-top: 30%; margin-bottom: 30%;">
+  <circle-progress
+    [percent]="percentage"
+    [title]="timeoutView"
+    [titleFontSize]="!timeoutView.includes('Sample') ? '18' : '13'"
+    subtitle="Until Next Sample"
+    [showSubtitle]="!timeoutView.includes('Sample') ? true : false">
+  </circle-progress>
+</div>

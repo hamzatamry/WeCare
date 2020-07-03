@@ -1,0 +1,47 @@
+ion-img,p {
+    position: relative;
+  }
+  
+  ion-content{
+    --ion-background-color:white;
+  }
+  
+  // ion-img{
+  //   --ion-background-position: center; 
+  //   --ion-background-size: cover;
+  // }
+  
+  p {
+    width: 100%;
+    color: darkgray;
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    font-size: larger;
+    font-weight: normal;
+  }
+  
+  ion-button{
+    height: 50px;
+    --border-radius: 30px;
+    margin-top: 30px;
+    font-weight: bolder;
+  }
+  
+  ion-button.guide {
+    --background: #d8e0fa;
+    --color: rgb(35, 35, 190);
+  }
+  
+  ion-button.getstarted {
+    --background: var(--ion-color-primary);
+  }
+  
+  hr {
+    border-top: 1px solid var(--ion-color-primary);
+    width: 92%;
+    margin-top: 30px;
+  }
+  
+  a{
+    color:var(--ion-color-primary);
+  }

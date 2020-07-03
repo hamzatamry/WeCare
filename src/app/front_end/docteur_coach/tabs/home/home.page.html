@@ -1,0 +1,37 @@
+<!-- la partie header de la page d'accueil du patient contenant un titre -->
+<ion-header >
+  <ion-toolbar>
+    <ion-title style="text-align: center;">
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content > 
+  <!-- slide des données physiques -->
+    <ion-grid>
+        <ion-row>
+          <ion-col size-md="6" offset-md="3">
+          <ion-card class="profile"  button="true" routerLink="profil">
+            <ion-card-title>Profile</ion-card-title>
+          </ion-card>
+
+        </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size-md="6" offset-md="3">
+          <ion-card class="patient-list" button="true" routerLink="patient-list">
+            <ion-card-title>Patient list</ion-card-title>
+          </ion-card>
+        </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+
+
+
+
+

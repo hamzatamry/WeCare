@@ -1,0 +1,80 @@
+<ion-content *ngIf="!isFetching">
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+
+        <!-- card qui contient la taille et le poids -->
+        <ion-card *ngIf="physicOrMedical">
+
+          <ion-card-header>
+            <ion-card-title style="text-align: center;">Height and Weight</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+
+            <ion-item>
+              <ion-label color="primary" position="stacked">Weight (Kg):</ion-label>
+              <ion-text>{{dataSanitaire.physicalData.weight}}</ion-text>
+            </ion-item>
+
+            <ion-item>
+              <ion-label color="primary" position="stacked" >Height (m)</ion-label>
+              <ion-text>{{dataSanitaire.physicalData.height}}</ion-text>
+            </ion-item>
+
+          </ion-card-content>
+        </ion-card>
+
+        <!-- card qui contient les données indiquant que le patient est handicapé ou nn, son groupe sanguin et la liste des maladies s'il existe -->
+        <ion-card *ngIf="!physicOrMedical">
+
+          <ion-card-header>
+            <ion-card-title style="text-align: center;">Diseases and disabilities</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+
+            <ion-item>
+              <ion-label color="primary" position="stacked">Blood group</ion-label>
+              <ion-text>{{dataSanitaire.medicalData.bloodType}}</ion-text> 
+            </ion-item>
+
+            <ion-item>
+              <ion-label color="primary" position="stacked" >Handicaps</ion-label>
+              <ion-text>{{ (dataSanitaire.medicalData.disabilities.length <= 0) ? 'aucun handicap': ''}}</ion-text>
+              <ul *ngIf=" !(dataSanitaire.medicalData.disabilities.length <= 0) ">
+                <li style="color: black;" *ngFor="let disabilitie of dataSanitaire.medicalData.disabilities">{{disabilitie}}</li>
+              </ul>
+            </ion-item>
+
+            <ion-item>
+              <ion-label color="primary" position="stacked" >Diseases</ion-label>
+              <ion-text>{{ (dataSanitaire.medicalData.illnesses.length <= 0) ? 'aucune maladie': ''}}</ion-text>
+              <ul *ngIf=" !(dataSanitaire.medicalData.illnesses.length <= 0) ">
+                <li style="color: black;" *ngFor="let illness of dataSanitaire.medicalData.illnesses">{{illness}}</li>
+              </ul>
+            </ion-item>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<!-- segment qui permet d'afficher en alternance les données physiques ou médicales -->
+<ion-segment #segment value="true" (ionChange)="segment.value == 'true' ? physicOrMedical = true : physicOrMedical = false" >
+  <ion-segment-button value="true">
+    <ion-label>Physical</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="false">
+    <ion-label>Medical</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
+
+
+
+
+
+

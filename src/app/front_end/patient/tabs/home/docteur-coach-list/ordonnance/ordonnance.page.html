@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" >
+      <ion-back-button defaultHref="patient/tabs/home/docteur-coach-list"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="secondary" style="text-align: center;">Prescriptions</ion-title>
+
+      <ion-buttons slot='end'>
+        <ion-button *ngIf="prescriptionDate!=''" (click)="prescriptionDate=''" color="secondary">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+        
+        <ion-button (click)="date.open()" color="secondary">
+          <ion-icon name="calendar" ></ion-icon> 
+        </ion-button>
+        </ion-buttons>
+        <ion-progress-bar *ngIf="isFetching" color="dark" type="indeterminate"></ion-progress-bar>
+        <ion-item style="display: none">
+          <ion-datetime  #date placeholder='Select date' [(ngModel)]="prescriptionDate" min="1920-01-01" [max]="today.toISOString()"></ion-datetime>
+        </ion-item>
+        
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content *ngIf="!isFetching" padding style="text-align: center;" class="ordonnance">
+    <img  style="margin-top: 30px;" src="../../../../../assets/ordonnance.png" >
+<ion-grid>
+  <ion-row>
+    <ion-col size-md="6" offset-md="3">
+      <ion-list [inset]="true" lines="full">
+        <ion-list-header style="text-align: center;" color="secondary">Prescriptions History</ion-list-header>
+        <ng-container  *ngFor="let presc of prescriptionsList; index as i">
+        <ion-item  button *ngIf="presc.consultationDate.toISOString().indexOf(prescriptionDate.substring(0,10)) > -1" (click)="presentPrescription(i)" >
+          <ion-avatar>
+            <img src="../../../../../assets/prescription.jpg">
+          </ion-avatar>
+          
+          <ion-label>
+            <h1 style="font-size: large; font-weight: 600;">&nbsp;{{presc.consultationDate.toDateString()}}</h1>
+            <h3>&nbsp;Situation:{{presc.situation}}</h3>
+            <h3>&nbsp;Drugs: click to see more...</h3>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+</ion-content>

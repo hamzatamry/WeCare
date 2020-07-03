@@ -1,0 +1,47 @@
+<!-- la partie header de la page d'accueil du patient contenant un titre -->
+<ion-header >
+  <ion-toolbar>
+    <ion-title style="text-align: center;">
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- le contenu de la page -->
+<ion-content>
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="3" offset-md="3">
+          <!-- slide du profil contenant le composant card qui se compose d'un header (titre) et d'un contenu (image + paragraphe) -->
+            <ion-card class="profile" button="true" routerLink="profil">
+              <ion-card-title>Profile</ion-card-title>
+            </ion-card>
+      </ion-col>
+      <ion-col size-md="3">
+          <!-- slide des données sanitaires -->
+            <ion-card class="physic" button="true" routerLink="physic">
+              <ion-card-title>Body state</ion-card-title>
+            </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="3" offset-md="3">
+        <!-- slide des données issues des capteurs -->
+          <ion-card class="sensorData" button="true" routerLink="diagram">
+            <ion-card-title>Sensor data</ion-card-title>
+          </ion-card>
+      </ion-col>
+      <ion-col size-md="3">
+        <!-- slide de la liste des docteurs -->
+          <ion-card class="docteur-coach-list" button="true" routerLink="docteur-coach-list">
+            <ion-card-title>Doctor List</ion-card-title>
+          </ion-card>
+      </ion-col> 
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+
+
+

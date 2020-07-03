@@ -1,0 +1,43 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <ion-avatar>
+    <ion-img src="../../../assets/mdpoubl.png"></ion-img>
+  </ion-avatar>
+  <ion-title class="ion-text-center">
+    Reset Password
+  </ion-title>
+
+    <form  #form="ngForm" class="resetpass" (ngSubmit)="onSubmit(form)">
+      <ion-grid>
+        <ion-row justify-content-center>
+          <ion-col align-self-center>
+            <div padding>
+              <br>
+              <ion-label for="newpass">Reset Code</ion-label>
+              <ion-item>
+                <ion-input name="code" type="text" placeholder="A code was sent to your email" ngModel required></ion-input>
+              </ion-item>
+              <br>
+              <ion-label for="newpass">New Password</ion-label>
+              <ion-item>
+                <ion-input name="newpass" type="password" placeholder="Enter a valid password" ngModel required></ion-input>
+              </ion-item>
+              <br>
+              <ion-label for="confirmnewpass">Confirm Password</ion-label>
+              <ion-item>
+                <ion-input name="confirmnewpass" type="password" placeholder="Confirm your password" ngModel required></ion-input>
+              </ion-item>
+            </div>
+            <br>
+            <div padding>
+              <ion-button type="submit" [disabled]="validateform(form)" expand="block">Reset</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+</ion-content>

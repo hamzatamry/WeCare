@@ -1,0 +1,291 @@
+<ion-content>
+  <ion-grid style="padding: 0 !important;">
+    <form #profileForm="ngForm" style="height: 100% !important" (ngSubmit)="onFormSubmit(profileForm)">
+      <ion-slides #slides pager="true" [options]="slideOpts" style="background: white;">
+  
+        <ion-slide>
+          <ion-card class="ion-no-margin" style="background: var(--ion-color-primary); height: 100% !important; width: 100% !important">
+            <ion-card-header class="ion-no-padding" style="height: 14vh !important;">
+              <ion-card-title class="ion-margin">
+                <h1 style="color: white; font-size: 3.75vh !important;">
+                  Before starting, we would like to know you better.
+                </h1>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content class="no-vertical-padding" style="background: white; height: 72vh !important;">
+              <ion-row>
+                <ion-col style="margin-top: 5vh">
+                  <ion-item>
+                    <ion-label class="required" position="floating">First Name</ion-label>
+                    <ion-input type="text" text name="firstName" pattern="([a-zA-Z]*\s{0,1}[a-zA-Z]*)*" required ngModel #firstNameCtrl="ngModel"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label class="required" position="floating">Last Name</ion-label>
+                    <ion-input type="text" text name="lastName" pattern="([a-zA-Z]*\s?[a-zA-Z]*)*" required ngModel #lastNameCtrl="ngModel"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label class="required" position="floating">Date of Birth</ion-label>
+                    <ion-datetime display-format="DD MMMM YYYY" picker-format="DD MMM YYYY" name="birthday" required ngModel #birthdayCtrl="ngModel"></ion-datetime>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label class="required" position="floating">Sex</ion-label>
+                    <ion-select name="sex" interface="popover" required ngModel #sexCtrl="ngModel">
+                      <ion-select-option value="m">Male</ion-select-option>
+                      <ion-select-option value="f">Female</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+            <div class="no-horizontal-padding footer" style="background: var(--ion-color-primary);">
+              <ion-button (click)="onQuit()" style="margin-right: 22%; margin-top: 1.5vh;" fill="clear" color="light">
+                <div>
+                  <ion-label class="footer-text">Quit</ion-label>
+                </div>
+              </ion-button>
+              <ion-button style="margin-left: 22%; margin-top: 1.5vh" fill="clear" color="light">
+                <div>
+                  <ion-label (click)="onNext()" class="footer-text">Next</ion-label>
+                </div>
+              </ion-button>
+            </div>
+          </ion-card>
+        </ion-slide>
+    
+        <ion-slide *ngIf="role === 'patient'">
+          <ion-card class="ion-no-margin" style="background: var(--ion-color-primary); height: 100% !important; width: 100% !important">
+            <ion-card-header class="ion-no-padding" style="height: 11.75vh;">
+              <ion-card-title class="ion-margin">
+                <h1 style="color: white; font-size: 3.75vh !important; margin-top: 9.5%; margin-bottom: 9.5%">
+                  Just a little more!
+                </h1>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content class="no-vertical-padding" style="background: white; height: 72vh !important">
+              <ion-row>
+                <ion-col style="margin-top: 3vh;">
+                  <ion-item>
+                    <ion-label class="required" position="floating">Height</ion-label>
+                    <ion-input name="height" type="number" number required [pattern]="inHeightCtrl.value === 'meters' ? '([1-3]|[0][.][5-9][0-9]*?|[1-2][.][0-9][0-9]*?)' : '([1].[6][4-9]([0-9]*?)|[2-9]|[2-8][.][0-9]*?|[9][.][0-7][0-9]?|[9][.][8][1-4]*?)'" [(ngModel)]="this.currentHeight"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="4" style="margin-top: 3vh;">
+                  <ion-item>
+                    <ion-label position="floating">In</ion-label>
+                    <ion-select name="inHeight" [ngModel]="'meters'" interface="popover" required ngModel #inHeightCtrl="ngModel" (ionChange)="onHeightSystemChange(inHeightCtrl.value)">
+                      <ion-select-option value="meters">Meters</ion-select-option>
+                      <ion-select-option value="feet">Feet</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="8">
+                  <ion-item>
+                    <ion-label class="required" position="floating">Weight</ion-label>
+                    <ion-input name="weight" type="number" number required [pattern]="inWeightCtrl.value === 'kgs' ? '([1-9]|[1-9][0-9]|[1-4][0-9][0-9]|500|[1-9][.][0-9]*?|[1-9][0-9][.][0-9]*?|[1-4][0-9][0-9][.][0-9]*?)' : '([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|10[0-9][0-9]|110[0-2]|[1-9][.][0-9]*?|[1-9][0-9][.][0-9]*?|[1-9][0-9][0-9][.][0-9]*?|10[0-9][0-9][.][0-9]*?|110[0-1][.][0-9]*?|1102[.][0-4][0-9]*?|1102.5)'" [(ngModel)]="this.currentWeight"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-item>
+                    <ion-label position="floating">In</ion-label>
+                    <ion-select name="inWeight" [ngModel]="'kgs'" interface="popover" required ngModel #inWeightCtrl="ngModel" (ionChange)="onWeightSystemChange(inWeightCtrl.value)">
+                      <ion-select-option value="kgs">Kgs</ion-select-option>
+                      <ion-select-option value="pounds">Pounds</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Illnesses</ion-label>
+                    <ion-select name="illnesses" multiple="true" ngModel>
+                      <ion-select-option *ngFor="let illness of illnessList" [value]="illness">
+                        {{ illness }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Disabilities</ion-label>
+                    <ion-select name="disabilities" multiple="true" ngModel>
+                      <ion-select-option *ngFor="let disability of disabilityList" [value]="disability">
+                        {{ disability }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label class="required" position="floating">Blood Type</ion-label>
+                    <ion-select name="bloodType" ngModel required>
+                      <ion-select-option *ngFor="let bloodType of bloodTypeList" [value]="bloodType">
+                        {{ bloodType }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+            <div class="no-horizontal-padding footer" style="background: var(--ion-color-primary)">
+              <ion-button (click)="onPrevious()" style="margin-right: 22%; margin-top: 1.5vh;" fill="clear" color="light">
+                <div>
+                  <ion-label class="footer-text">Previous</ion-label>
+                </div>
+              </ion-button>
+              <ion-button style="margin-left: 22%; margin-top: 1.5vh" fill="clear" color="light">
+                <div>
+                  <ion-label (click)="onNext()" class="footer-text">Next</ion-label>
+                </div>
+              </ion-button>
+            </div>
+          </ion-card>
+        </ion-slide>
+    
+        <ion-slide>
+          <ion-card class="ion-no-margin" style="background: var(--ion-color-primary); height: 100% !important; width: 100% !important">
+            <ion-card-header class="ion-no-padding" style="height: 11.75vh;">
+              <ion-card-title class="ion-margin">
+                <h1 style="color: white; font-size: 3.75vh !important; margin-top: 9.5%; margin-bottom: 9.5%">
+                  One final push!
+                </h1>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content class="no-vertical-padding" style="background: white; height: 72vh !important">
+              <ion-row>
+                <ion-col size="4" [style]="role === 'patient' ? 'margin-top: 7vh;' : 'margin-top: 5vh;'">
+                  <ion-item>
+                    <ion-label class="required" position="floating">Code</ion-label>
+                    <ion-select name="code" placeholder="+" required ngModel #codeCtrl="ngModel">
+                      <ion-select-option *ngFor="let countryCode of countryCodes" [value]="countryCode.code + ' ' + countryCode.name">
+                        {{countryCode.code}} {{countryCode.name}}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col [style]="role === 'patient' ? 'margin-top: 7vh;' : 'margin-top: 5vh;'">
+                  <ion-item>
+                    <ion-label class="required" position="floating">Phone Number</ion-label>
+                    <ion-input name="phoneNumber" type="number" number required ngModel pattern="[0-9]{7,10}" #phoneNumberCtrl="ngModel"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Preferred Notification Time</ion-label>
+                    <ion-datetime name="notificationTime" picker-format="hh : mm A" display-format="hh:mm A" ngModel></ion-datetime>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="role !== 'patient'">
+                <ion-col>
+                  <ion-item>
+                    <ion-label class="required" position="floating">Specialty</ion-label>
+                    <ion-select name="specialty" required ngModel #specialtyCtrl="ngModel">
+                      <ion-select-option *ngFor="let specialty of specialtyList" [value]="specialty">
+                        {{ specialty }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="floating">Details</ion-label>
+                    <ion-textarea name="details" maxlength="100" ngModel placeholder="In no more than a 100 characters, tell us any other details that we may have missed."></ion-textarea>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+            <div class="no-horizontal-padding footer" style="background: var(--ion-color-primary)">
+              <ion-button (click)="onPrevious()" style="margin-right: 22%; margin-top: 1.5vh;" fill="clear" color="light">
+                <div>
+                  <ion-label class="footer-text">Previous</ion-label>
+                </div>
+              </ion-button>
+              <ion-button (click)="onNext()" style="margin-left: 22%; margin-top: 1.5vh;" fill="clear" color="light">
+                <div>
+                  <ion-label class="footer-text">Next</ion-label>
+                </div>
+              </ion-button>
+            </div>
+          </ion-card>
+        </ion-slide>
+    
+        <ion-slide>
+          <ion-card class="ion-no-margin" style="background: var(--ion-color-primary); height: 100% !important; width: 100% !important">
+            <ion-card-header class="ion-no-padding" style="height: 11.75vh;">
+              <ion-card-title class="ion-margin">
+                <h1 style="color: white; font-size: 3.75vh !important; margin-top: 9.5%; margin-bottom: 9.5%">
+                  And we're done!
+                </h1>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content class="no-vertical-padding" style="background: white; height: 72vh !important">
+              <ion-row>
+                <ion-col size="5" *ngIf="!selectedImage" style="margin-top: 2.5vh">
+                  <ion-thumbnail style="margin-left: 20% !important; margin-top: 20% !important; height: 80% !important; width: 70% !important;">
+                    <ion-img src="../../../assets/userAdd.png"></ion-img>
+                  </ion-thumbnail>
+                </ion-col>
+                <ion-col [style.margin-right.vh]="selectedImage ? '0' : '2'" [style.margin-top.vh]="selectedImage ? '3' : '8'">
+                  <app-image-picker *ngIf="!selectedImage" (imagePick)="onImagePicked($event)"></app-image-picker>
+                  <ion-thumbnail *ngIf="selectedImage" style="height: 22vh; width: 26vh; margin: auto" class="ion-text-center">
+                    <ion-img [src]="imageData"></ion-img>
+                  </ion-thumbnail>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col style="margin-top: 4% !important">
+                  <ion-card style="height: 37.5vh !important;">
+                    <ion-card-header *ngIf="selectedLocation">
+                      <ion-card-subtitle>{{ selectedLocation?.address }}</ion-card-subtitle>
+                    </ion-card-header>
+                    <ion-card-content style="height: 100% !important;">
+                      <div [style.margin-top.vh]="selectedLocation ? '0' : '11.5'">
+                        <app-location-picker (locationPick)="onLocationPicked($event)"></app-location-picker>
+                      </div>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+            <div class="no-horizontal-padding footer" style="background: var(--ion-color-primary)">
+              <ion-button (click)="onPrevious()" style="margin-right: 22%; margin-top: 1.5vh;" fill="clear" color="light">
+                <div>
+                  <ion-label class="footer-text">Previous</ion-label>
+                </div>
+              </ion-button>
+              <ion-button [disabled]="profileForm.invalid" type="submit" style="margin-left: 22%; margin-top: 1.5vh;" fill="clear" color="light">
+                <div>
+                  <ion-label class="footer-text">Done</ion-label>
+                </div>
+              </ion-button>
+            </div>
+          </ion-card>
+        </ion-slide>
+  
+      </ion-slides>
+    </form>
+  </ion-grid>
+</ion-content>

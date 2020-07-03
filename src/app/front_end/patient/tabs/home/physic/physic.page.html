@@ -1,0 +1,122 @@
+<!-- l'entete de la page des donnees sanitaires -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/patient/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="text-align: center;">Body state</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="noEditing = !noEditing">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-progress-bar *ngIf="isFetching" color="dark" type="indeterminate"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!isFetching">
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+
+        <!-- segment qui permet d'afficher en alternance les donnees physiques ou medicales -->
+        <ion-segment #segment value="true" (ionChange)="segment.value == 'true' ? physicOrMedical = true : physicOrMedical = false" >
+          <ion-segment-button value="true">
+            <ion-label>Physical</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="false">
+            <ion-label>Medical</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+
+        <form #f="ngForm" (ngSubmit)="onSubmit()">
+          <!-- card qui contient la taille et le poids -->
+          <ion-card *ngIf="physicOrMedical">
+            <ion-card-header>
+              <ion-card-title style="text-align: center;">Weight and Height</ion-card-title>
+            </ion-card-header>
+
+           
+            <ion-card-content>
+              <!-- champ de saisie du poids -->
+              <ion-item>
+                <ion-label color="primary" position="stacked">Weight (Kg):</ion-label>
+                <ion-input ngModel 
+                name="poids" [readonly]="noEditing" #poids="ngModel" 
+                type="text" clearInput required pattern="([1-9]|[1-9][0-9]|[1-4][0-9][0-9]|500|[1-9][.][0-9]*?|[1-9][0-9][.][0-9]*?|[1-4][0-9][0-9][.][0-9]*?)"
+                [(ngModel)]="dataSanitaire.weight">
+                </ion-input>
+                <p *ngIf="!poids.valid" style="color: red;">
+                  Your weight must be understood 1kg and 500kg
+                </p>
+              </ion-item>
+              
+              <!-- champ de saisie de la taille -->
+              <ion-item>
+                <ion-label color="primary" position="stacked" >Height (m)</ion-label>
+                <ion-input name="taille" 
+                [readonly]="noEditing" #taille="ngModel"
+                type="text" required pattern="([1-3]|[0][.][5-9][0-9]*?|[1-2][.][0-9][0-9]*?)" 
+                clearInput 
+                [(ngModel)]="dataSanitaire.height"></ion-input>
+                <p *ngIf="!taille.valid" style="color: red;">
+                  Your height must be between 0.50m and 3m
+                </p>
+              </ion-item>
+              
+            </ion-card-content>
+          </ion-card>
+
+          <!-- card qui contient les donnees indiquant que le patient est handicape ou nn, son groupe sanguin et la liste des maladies s'il existe -->
+          <ion-card *ngIf="!physicOrMedical">
+            <ion-card-header>
+              <ion-card-title style="text-align: center;">Diseases and disabilities</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+              
+              <!-- champ de selection du group sanguin -->
+              <ion-item [disabled]="noEditing">
+                <ion-label color="primary" position="stacked">Blood group</ion-label>
+                <ion-select  name="groupeSanguin" [(ngModel)]="dataSanitaire.bloodType">
+                  <ion-select-option *ngFor="let maladie of ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']">{{maladie}}</ion-select-option> 
+                </ion-select>
+              </ion-item>
+
+              <!-- champ de selection de l'handicap si la personne est handicapee -->
+              <ion-item [disabled]="noEditing">
+                <ion-label color="primary" position="stacked">Disabilities</ion-label>
+                <ion-select name="handicaps" [(ngModel)]="dataSanitaire.disabilities" [selectedText]="(dataSanitaire.disabilities.length <= 0) ? 'no handicap' : ''"  [multiple]="true">
+                  <ion-select-option *ngFor="let handicap of handicaps">{{handicap}}</ion-select-option>
+                </ion-select> 
+              </ion-item>
+
+              <!-- champ de selection la maladie si la personne est malade -->
+              <ion-item [disabled]="noEditing" >
+                <ion-label color="primary" position="stacked">Diseases</ion-label>
+                <ion-select name="maladies" [(ngModel)]="dataSanitaire.illnesses" [selectedText]="(dataSanitaire.illnesses.length <= 0) ? 'no illness' : ''"  [multiple]="true">
+                  <ion-select-option *ngFor="let disease of diseases">{{disease}}</ion-select-option>
+                </ion-select> 
+              </ion-item>
+
+              <!-- champ de saisie d'autres informations que le patient veut envoyer -->
+              <ion-item [disabled]="noEditing">
+                <ion-label color="primary" position="stacked">More informations</ion-label>
+                <ion-textarea name="informations" type="text" [(ngModel)]="dataSanitaire.details" placeholder="Enter more information you couldn't select"  autoGrow maxlength="100">
+                </ion-textarea>
+              </ion-item>
+
+            </ion-card-content>
+          </ion-card>
+
+          <div class="ion-padding ion-text-right">
+            <ion-button [disabled]="!f.valid || noEditing" type="submit" fill="outline" color="danger" >Save</ion-button>
+          </div>
+
+        </form>
+      </ion-col>
+    </ion-row> 
+  </ion-grid>
+</ion-content>
+
+

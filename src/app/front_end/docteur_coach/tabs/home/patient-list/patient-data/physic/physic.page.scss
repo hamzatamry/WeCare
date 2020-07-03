@@ -1,0 +1,21 @@
+.ionLabel
+{
+    color: orange;
+}
+
+.selectWrapper{
+    .select-icon {
+        visibility: hidden;
+    }
+}
+
+ion-card {
+    ion-card-header {
+        ion-card-title {
+            color: var(--ion-color-primary);
+        }
+    }
+    border: 2px solid var(--ion-color-primary);
+    border-radius: 10%;
+    box-shadow: 5px 5px 0px var(--ion-color-primary);
+}

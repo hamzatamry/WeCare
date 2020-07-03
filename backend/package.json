@@ -1,0 +1,19 @@
+{
+  "name": "pfademo",
+  "version": "1.0.0",
+  "author": "Ionic Framework",
+  "homepage": "https://ionicframework.com/",
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.13",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.4.6",
+    "randomstring": "^1.1.5",
+    "request": "^2.88.2"
+  },
+  "description": "An Ionic project"
+}

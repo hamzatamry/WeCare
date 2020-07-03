@@ -1,0 +1,15 @@
+ion-icon, ion-label {
+    color: white;
+}
+
+ion-tabs {
+   
+    ion-tab-bar {
+        --background: var(--ion-color-primary);
+        ion-tab-button {
+            --ripple-color: white !important;
+        }
+    }
+  }
+
+

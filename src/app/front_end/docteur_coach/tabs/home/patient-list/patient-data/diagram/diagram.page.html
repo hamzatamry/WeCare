@@ -1,0 +1,422 @@
+<ion-content *ngIf="!isFetching">
+  
+            <!-- global Chart -->
+      <ion-slides>
+        <ion-slide>
+          <ion-card>
+            <ion-card-content>
+              <canvas baseChart 
+              [datasets]="globalChart.globalData" 
+              [labels]="globalLabels" 
+              chartType="line"
+              [options]="globalChart.options"
+              [legend]="true"
+              height="500px"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+      
+    <ion-slides [pager]="true">
+      <ion-slide>
+        <!--------------------------------- temperature chart --------------------------------------->  
+      <!--ion-card *ngIf="!globalSensor.temperature.state" style="text-align: center;">
+          <ion-label style="color: red;">Temperature sensor is not working</ion-label>
+          <ion-img src="../../../../assets/state.jpg"></ion-img>
+      </ion-card-->
+
+      <ion-card>
+        <ion-card-content >
+          <canvas [class]="globalSensor.temperature.state ? undefined: 'not-working'"
+          baseChart 
+          [datasets]="temperatureChart.data" 
+          [labels]="currentDayLabels" 
+          chartType="bar" 
+          [options]="temperatureChart.options"
+          [legend]="false"
+          height = "350px">
+          </canvas>
+        </ion-card-content>
+
+        <!-- boutton toggle qui permet d"afficher l"analyse -->
+        <ion-item lines="full">
+          <ion-label color="primary" class="ion-padding">More details</ion-label>
+          <ion-toggle [disabled]="!globalSensor.temperature.state" #toggle_1></ion-toggle>
+        </ion-item>
+
+        <!-- le tableau de l"analyse -->
+        <ion-grid *ngIf="toggle_1.checked">
+          <ion-row>
+            <ion-col size="2.4">Time</ion-col>
+                <ion-col [size]="(9.6 / globalSensor.temperature.values[day].length)" *ngFor="let time of currentDayLabels" >
+                {{time}}
+                </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Sign</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.temperature.values[day].length)" *ngFor="let temperature of globalSensor.temperature.values[day]">
+                <img src="../../../../assets/{{testSensorData.temperatureTest(temperature) != 'Normal' ? 'alert':'bon'}}.jpg">
+              </ion-col>  
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Value</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.temperature.values[day].length)" *ngFor="let temperature of globalSensor.temperature.values[day]">
+                {{temperature == null ? 'missing': temperature}}
+              </ion-col>   
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Standard</ion-col>
+            <ion-col>
+                36.1 < . < 37.5
+            </ion-col>  
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Situation</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.temperature.values[day].length)" *ngFor="let temperature of globalSensor.temperature.values[day];">
+                {{testSensorData.temperatureTest(temperature)}}
+              </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card>
+      </ion-slide>
+      <ion-slide>
+         <!--------------------------------------------------------------------------------------------->
+    <!----------------------------------- glucose chart -------------------------------------------->
+      <!--ion-card *ngIf="!globalSensor.glucose.state" style="text-align: center;">
+        <ion-label style="color: red;">Glucose sensor is not working</ion-label>
+        <ion-img src="../../../../assets/state.jpg"></ion-img>
+      </ion-card-->
+
+      <ion-card>
+        <ion-card-content>
+          <canvas baseChart height="350px" [class]="globalSensor.glucose.state ? undefined: 'not-working'"
+          [datasets]="glucoseChart.data" 
+          [options]="glucoseChart.options" 
+          [labels]="currentDayLabels"
+          [legend]="false"
+          chartType="radar">
+          </canvas>
+        </ion-card-content>
+
+        <!-- boutton toggle qui permet d"afficher l"analyse -->
+        <ion-item lines="full">
+          <ion-label color="primary" class="ion-padding">More details</ion-label>
+          <ion-toggle [disabled]="!globalSensor.glucose.state" #toggle_2></ion-toggle>
+        </ion-item>
+
+        <!-- le tableau de l"analyse -->
+        <ion-grid *ngIf="toggle_2.checked">
+          <ion-row>
+            <ion-col size="2.4">Time</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.glucose.values[day].length)" *ngFor="let time of currentDayLabels">
+              {{time}}
+              </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Sign</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.glucose.values[day].length)" *ngFor="let glucose of globalSensor.glucose.values[day];">
+                <img  src="../../../../assets/{{testSensorData.glycemieTest(glucose) != 'Normal'? 'alert':'bon'}}.jpg">
+              </ion-col> 
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Value</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.glucose.values[day].length)"  *ngFor="let glucose of globalSensor.glucose.values[day];">
+                {{glucose == null ? 'missing': glucose}}
+              </ion-col>   
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Standard</ion-col>
+            <ion-col>
+              0.7 < . < 1
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Situation</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.glucose.values[day].length)" *ngFor="let glucose of globalSensor.glucose.values[day];">
+                {{testSensorData.glycemieTest(glucose)}}
+              </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-card>
+      </ion-slide>
+      <ion-slide>
+        
+    <!------------------------------------------ hyperTension Chart ------------------------------>
+      <!--ion-card *ngIf="!globalSensor.bloodPressure.state" style="text-align: center;">
+        <ion-label style="color: red;">HyperTension sensor is not working</ion-label>
+        <ion-img src="../../../../assets/state.jpg"></ion-img>
+      </ion-card-->
+
+    
+      <ion-card> 
+        <ion-card-content>
+          <canvas baseChart [class]="globalSensor.bloodPressure.state ? undefined: 'not-working'"
+          [datasets]="hyperTensionChart.data" 
+          [labels]="currentDayLabels" 
+          chartType="line" 
+          [options]="hyperTensionChart.options"
+          [legend] ="false"
+          height="350px"></canvas>
+        </ion-card-content>
+
+        <ion-item lines="full">
+          <ion-label color="primary" class="ion-padding">More details</ion-label>
+          <ion-toggle [disabled]="!globalSensor.bloodPressure.state" #toggle_3></ion-toggle>
+        </ion-item>
+
+        
+        <!-- hyperTension diagram table -->
+        <ion-grid *ngIf="toggle_3.checked">
+          <ion-row>
+            <ion-col size="2.4">Time</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.bloodPressure.values[day].length)" *ngFor="let time of currentDayLabels">
+                {{time}}
+              </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Sign</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.bloodPressure.values[day].length)" *ngFor="let hyperTension of globalSensor.bloodPressure.values[day];" >
+                <img src="../../../../assets/{{testSensorData.hyperTensionTest(hyperTension) != 'Normal' && testSensorData.hyperTensionTest(hyperTension) != 'Optimal' ? 'alert':'bon'}}.jpg">
+              </ion-col> 
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Value</ion-col>
+            <ng-container>
+              <ion-col [size]="(9.6 / globalSensor.bloodPressure.values[day].length)" *ngFor="let hyperTension of globalSensor.bloodPressure.values[day];" >
+                {{hyperTension == null ? 'missing': hyperTension}}
+              </ion-col>  
+            </ng-container>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Standard</ion-col>
+            <ion-col>
+                110 < . < 130
+            </ion-col>  
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Situation</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.bloodPressure.values[day].length)" *ngFor="let hyperTension of globalSensor.bloodPressure.values[day];">
+                {{testSensorData.hyperTensionTest(hyperTension)}}
+              </ion-col> 
+          </ion-row>
+        </ion-grid>
+      </ion-card>
+      </ion-slide>
+    <ion-slide>
+      <!-------------------------------------------- oxygene Chart --------------------------------->
+
+      <!--ion-card *ngIf="!globalSensor.oxygen.state" style="text-align: center;">
+        <ion-label style="color: red;">Oxygen sensor is not working</ion-label>
+        <ion-img src="../../../../assets/state.jpg"></ion-img>
+      </ion-card-->
+
+      <ion-card>
+        <ion-card-content>
+          <canvas baseChart [class]="globalSensor.oxygen.state ? undefined: 'not-working'"
+          [datasets]="oxygeneChart.data" 
+          [labels]="currentDayLabels" 
+          chartType="polarArea" 
+          [options]="oxygeneChart.options"
+          height="350px"></canvas>
+        </ion-card-content>
+
+        <ion-item lines="full">
+          <ion-label color="primary" class="ion-padding">more details</ion-label>
+          <ion-toggle [disabled]="!globalSensor.oxygen.state" #toggle_4></ion-toggle>
+        </ion-item>
+
+        <ion-grid *ngIf="toggle_4.checked">
+          <ion-row>
+            <ion-col size="2.4">Time</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.oxygen.values[day].length)" *ngFor="let time of currentDayLabels">
+                {{time}}
+              </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Sign</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.oxygen.values[day].length)"  *ngFor="let oxygenation of globalSensor.oxygen.values[day]">
+                <img src="../../../../assets/{{testSensorData.oxygenationTest(oxygenation) != 'Insufficient saturation'? 'alert':'bon'}}.jpg">
+              </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Value</ion-col>
+            <ion-col [size]="(9.6 / globalSensor.oxygen.values[day].length)" *ngFor="let oxygenation of globalSensor.oxygen.values[day]">
+              {{oxygenation == null ? 'missing': oxygenation}}
+            </ion-col>   
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Standard</ion-col>
+            <ion-col>
+                95 < . < 100
+            </ion-col>  
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Situation</ion-col>
+            <ng-container>
+              <ion-col [size]="(9.6 / globalSensor.oxygen.values[day].length)" *ngFor="let oxygenation of globalSensor.oxygen.values[day]">
+                {{testSensorData.oxygenationTest(oxygenation)}}
+              </ion-col> 
+            </ng-container>
+          </ion-row>
+        </ion-grid>
+
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+   
+    <ion-slides>
+      <ion-slide>
+         <!-------------------------------------------- heartBeats Chart ------------------------------>
+
+      <!--ion-card *ngIf="!globalSensor.heartbeat.state" style="text-align: center;">
+        <ion-label style="color: red;">Heart Beat sensor is not working</ion-label>
+        <ion-img src="../../../../assets/state.jpg"></ion-img>
+      </ion-card-->
+
+      <ion-card >
+
+        <ion-card-content style="text-align: center;" [class]="globalSensor.heartbeat.state ? undefined:'heartBeats'"> 
+          <div>
+            <h1>Heartbeats</h1>
+            <img *ngIf="globalSensor.heartbeat.state"  src="../../../../../assets/heartBeats.gif">
+            <img *ngIf="!globalSensor.heartbeat.state" src="../../../../../assets/state.jpg" height="90%" width="90%" style="opacity: 40%;">
+            <h2>{{HeartBeatsValue == null ? 'missing': HeartBeatsValue + " " + "bpm"}}</h2>
+          </div>
+        </ion-card-content>
+
+        <ion-item lines="full">
+          <ion-label color="primary" class="ion-padding">more details</ion-label>
+          <ion-toggle [disabled]="!globalSensor.heartbeat.state" #toggle_5></ion-toggle>
+        </ion-item>
+
+        <ion-grid *ngIf="toggle_5.checked">
+          <ion-row>
+            <ion-col size="2.4">Time</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.heartbeat.values[day].length)" *ngFor="let time of currentDayLabels" >
+                {{time}}
+              </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Sign</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.heartbeat.values[day].length)" *ngFor="let heartbeats of globalSensor.heartbeat.values[day]">
+                <img src="../../../../assets/{{testSensorData.heartBeatsTest(heartbeats) != 'Normal'? 'alert':'bon'}}.jpg">
+              </ion-col> 
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Value</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.heartbeat.values[day].length)" *ngFor="let heartbeats of globalSensor.heartbeat.values[day]">
+                {{heartbeats == null ? 'missing': heartbeats}}
+              </ion-col>  
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Standard</ion-col>
+            <ion-col>
+                60 <= . <= 100
+            </ion-col>  
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Situation</ion-col>
+              <ion-col [size]="(9.6 / globalSensor.heartbeat.values[day].length)"  *ngFor="let heartbeats of globalSensor.heartbeat.values[day]">
+                {{testSensorData.heartBeatsTest(heartbeats)}}
+              </ion-col> 
+          </ion-row>
+        </ion-grid>
+
+        <ion-segment #heartSegment >
+          <ion-segment-button  *ngFor="let label of labels[segment.value]; index as prelevTime " (click)="displayHeartBeats(prelevTime, segment.value)" >{{label}} </ion-segment-button>
+        </ion-segment>
+      </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <!-------------------------------------------- Steps Chart ----------------------------------->
+      <!--ion-card *ngIf="!globalSensor.steps.state" style="text-align: center;">
+        <ion-label style="color: red;">Steps sensor is not working</ion-label>
+        <ion-img src="../../../../assets/state.jpg"></ion-img>
+      </ion-card-->
+
+      <ion-card>
+
+        <ion-card-content style="text-align: center;" [class]="globalSensor.steps.state ? undefined: 'steps'">
+          <div>
+            <h1>Foot steps</h1>
+            <img *ngIf="globalSensor.steps.state" src="../../../../../assets/footing.gif">
+            <img *ngIf="!globalSensor.steps.state" src="../../../../../assets/state.jpg" height="90%" width="90%" style="opacity: 40%;">
+            <h2>{{nombrePas == null || nombrePas == 0 ? 'missing': nombrePas}}</h2>
+          </div>
+        </ion-card-content>
+
+        <ion-item lines="full">
+          <ion-label color="primary" class="ion-padding">More details</ion-label>
+          <ion-toggle [disabled]="!globalSensor.steps.state" #toggle_6></ion-toggle>
+        </ion-item>
+
+        <ion-grid *ngIf="toggle_6.checked">
+
+          <ion-row>
+            <ion-col size="2.4">Sign</ion-col>
+            <ion-col size="9.6">
+              <img src="../../../../assets/{{testSensorData.stepsTest(stepsPerDar) != 'Active' && testSensorData.stepsTest(stepsPerDar) != 'Very active' ? 'alert': 'bon'}}.jpg">
+            </ion-col>   
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Value</ion-col>
+            <ion-col size="9.6">
+              {{stepsPerDar == null ? 'missing': stepsPerDar}}
+            </ion-col>   
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Standard</ion-col>
+            <ion-col size="9.6">
+                10000 <= . 
+            </ion-col>  
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="2.4">Situation</ion-col>
+            <ion-col size="9.6">{{testSensorData.stepsTest(stepsPerDar)}}</ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-segment>
+          <ion-segment-button *ngFor="let time of labels[segment.value]; index as nPrelev" [value]="nPrelev" (click)="displaySteps(nPrelev, segment.value);">{{time}}</ion-segment-button>
+      </ion-segment> 
+      </ion-card>
+      </ion-slide>
+    </ion-slides>
+</ion-content>
+
+<ion-header>
+  <ion-toolbar class="toolbar">
+    <ion-segment class="days" [disabled]="isFetching" #segment scrollable [(ngModel)]="day" (ionChange)="changeData(segment.value);stepsPerDar=calculateTotalSteps();">
+      <ion-segment-button value="1"><ion-label>Monday</ion-label></ion-segment-button>
+      <ion-segment-button value="2"><ion-label>Tuesday</ion-label></ion-segment-button>
+      <ion-segment-button value="3"><ion-label>Wednesday</ion-label></ion-segment-button>
+      <ion-segment-button value="4"><ion-label>Jeudi</ion-label></ion-segment-button>
+      <ion-segment-button value="5"><ion-label>Thursday</ion-label></ion-segment-button>
+      <ion-segment-button value="6"><ion-label>Saturday</ion-label></ion-segment-button>
+      <ion-segment-button value="0"><ion-label>Sunday</ion-label></ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>

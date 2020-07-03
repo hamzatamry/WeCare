@@ -1,0 +1,13 @@
+{
+    "message": "string",
+    "email": "string",
+    "firstName" : "string",
+    "lastName" : "string",
+    "be" : "1994-11-05T13:15:30Z",
+    "sex" : "string",
+    "phoneNumber" : "string",
+    "country" : "Morocco",
+    "adress" : "string",
+    "staticMapImageUrl": "string",
+    "imagePath" : "string"
+}

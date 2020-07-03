@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Verify your email</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close-outline" slot="icon-only" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-text-center">
+  <form #verifyEmailForm="ngForm" (ngSubmit)="onFormSubmit(verifyEmailForm)">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="8" offset="2">
+          <ion-item style="margin-top: 30px; margin-bottom: 15px;">
+            <ion-label position="floating">Verification Code</ion-label>
+            <ion-input type="text" name="code" required ngModel #codeCtrl="ngModel"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" offset="2">
+          <ion-button type="submit" expand="block" [disabled]="!verifyEmailForm.valid">Verify</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" offset="2">
+          <div class="ion-margin-top">
+            <ion-text>Please check your mail.</ion-text>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text>Didn't receive anything? You can always try to</ion-text>
+          <br/>
+          <ion-button fill="clear" (click)="onResend()" [disabled]="!canSend">resend</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!canSend && timeoutView">
+        <ion-col>
+          <ion-text>{{ timeoutView }}</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!canSend && timeoutView">
+        <ion-col>
+          <ion-spinner color="primary"></ion-spinner>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

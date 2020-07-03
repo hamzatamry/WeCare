@@ -1,0 +1,7 @@
+{
+  "name": "PFA",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

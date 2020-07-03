@@ -1,0 +1,8 @@
+{
+  "appId": "io.ionic.pfa",
+  "appName": "Health",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}

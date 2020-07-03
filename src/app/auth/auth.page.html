@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Authenticate</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment value="login" (ionChange)="onSignSwitch(authForm)">
+    <ion-segment-button value="login">Login</ion-segment-button>
+    <ion-segment-button value="register">Register</ion-segment-button>
+  </ion-segment>
+  <form #authForm="ngForm" (ngSubmit)="onFormSubmit(authForm)">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-md="6" offset-md="3">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>{{ isLogging ? 'Login' : 'Register' }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-item>
+                <ion-label class="required" position="floating">Email</ion-label>
+                <ion-input type="email" name="email" required email autocomplete autofill autocorrect="off" ngModel #emailCtrl="ngModel"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="emailCtrl.touched && !emailCtrl.valid" lines="none">
+                <ion-icon name="warning" style="color: var(--ion-color-warning); outline-color: var(--ion-color-warning);"></ion-icon>
+                <ion-label class="ion-padding-horizontal">Enter a valid email address</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label class="required" position="floating">Password</ion-label>
+                <ion-input type="password" name="password" required password autofill minlength="6" ngModel #passwordCtrl="ngModel"></ion-input>
+              </ion-item>
+              <div *ngIf="isLogging">
+                <ion-item *ngIf="passwordCtrl.touched && !passwordCtrl.valid" lines="none">
+                  <ion-icon name="warning" style="color: var(--ion-color-warning); outline-color: var(--ion-color-warning);"></ion-icon>
+                  <ion-text class="ion-padding-horizontal">Enter a valid password</ion-text>
+                </ion-item>
+              </div>
+              <div *ngIf="!isLogging">
+                <ion-item *ngIf="passwordCtrl.touched && !passwordCtrl.valid" lines="none">
+                  <ion-icon name="warning" style="color: var(--ion-color-warning); outline-color: var(--ion-color-warning); font-size: 37px;"></ion-icon>
+                  <ion-text class="ion-padding">Password should at least be 6 characters long</ion-text>
+                </ion-item>
+              </div>
+              <ion-item>
+                <ion-label class="required">Role</ion-label>
+                <ion-select name="role" required ngModel #roleCtrl="ngModel">
+                  <ion-select-option value="patient">Patient</ion-select-option>
+                  <ion-select-option value="doctor">Doctor</ion-select-option>
+                  <ion-select-option value="coach">Coach</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <div class="ion-margin-vertical ion-text-end">
+                <ion-button type="submit" [disabled]="!authForm.valid">Submit</ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

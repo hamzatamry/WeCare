@@ -1,0 +1,189 @@
+{
+	"patient": 
+	{
+		"route": "/patient/home",
+		"data needed":
+		{
+			"id": string | number
+		},
+
+		"route": "/patient/home/profile/:id",
+		"data needed": 
+		{
+			lastName: string, 
+			firstName: string, 
+			birthday: Date,
+			sex: string,
+			phoneNumber: string,
+			country: string,
+			geolocation.addresse: string
+			geolocation.staticMapImageUrl: string
+		},
+
+		"route": "/patient/home/sanitaryData/:id",
+		"data needed": 
+		{
+			height: number,
+			weight: number,
+			disabilities: string[]
+			bloodType: string,
+			illnesses: string[]
+
+			//remarque si la personne est non handicape, disabilities = []
+		},
+
+		"route": "/patient/home/sensorData/:id",
+		"data needed": 
+		{
+			temperature: sensor,
+			glucose: sensor,
+			bloodPressure: sensor,
+			oxygenation: sensor,
+			heartBeat: sensor,
+			steps: sensor
+		},
+
+		"route": "/patient/home/doctor-coach-list/:id",
+		"data needed":
+		{
+			doctor_coachList = [
+				{	
+					"id": string | number,
+					"lastName": string, 
+					"firstName": string,
+					"type": string, 
+					"birthday": string,
+					"specialite": string,
+					"sex": string,
+					"email": string,
+					"phoneNumber": string,
+					"geolocation.addresse": string,
+					"confirmed": boolean 
+
+					Remarque: si confirmed est false les champs suivants doivent avoir
+					la valeur undefined : 
+						id, sex, email, phoneNumber, geolocation.addresse
+				}
+			]
+		},
+
+		"route": "/patient/home/docteur-coach-list/ordonnance/:patient_id/:doctor_coach_id",
+		"data needed": 
+		{	
+			"prescription_id": string | number,
+			prescriptionList: [
+				{
+					"consultationDate": Date,
+
+					//par exemple: fièvre pour qu'on l'interpole dans les metadonnees
+					"situation": string, 
+				}
+			]
+		},
+
+		"route":"/patient/home/doctor-coach-list/details/:prescription_id",
+
+		//details c'est une page de popover elle n'apparait pas dans le path
+
+		"data needed": 
+		{
+			prescriptionList: [
+				{
+					"medication": string[],
+					"details": string
+				}
+			]	
+		}
+	},
+
+	"docteur_coach": {
+
+		"route": "/docteur_coach/home",
+		"data needed": {
+			id: string | number
+		},
+
+		"route": "/doctor_coach/home/profile/:id",
+		"data needed": 
+		{
+			lastName: string, 
+			firstName: string, 
+			birthday: Date,
+			type: string,
+			specialite: string 
+			sex: string,
+			email: string,
+			phoneNumber: string,
+			country: string,
+			geolocation.addresse: string
+			geolocation.staticMapImageUrl: string
+		},
+
+		"route": "/doctor_coach/home/patient-list",
+		"date needed": {
+
+			patientList = [
+				{	
+					"id": string | number,
+					"lastName": string, 
+					"firstName": string,
+					"birthday": string,
+					"sex": string,
+					"email": string,
+					"phoneNumber": string,
+					"geolocation.addresse": string,
+					"confirmed": boolean 
+
+					Remarque: si confirmed est false les champs suivants doivent avoir
+					la valeur undefined : 
+						id, sex, email, geolocation.addresse
+				}
+			]
+		},
+
+		"route": "/doctor_coach/home/patient-list/patient-data/diagram/:id",
+		"data needed": {
+			temperature: sensor,
+			glucose: sensor,
+			bloodPressure: sensor,
+			oxygenation: sensor,
+			heartBeat: sensor,
+			steps: sensor
+		},
+
+		"route": "/doctor_coach/home/patient-list/patient-data/physic/:id",
+		"data needed": {
+			height: number,
+			weight: number,
+			disabilities: string[]
+			bloodType: string,
+			illnesses: string[]
+			//remarque si handicap est false, disabilities = []
+		},
+
+		"route": "/doctor_coach/home/patient-list/patient-data/ordonnance/:doctor_coach_id/:patient_id",
+		"data needed": {
+
+			"prescription_id": string | number,
+			prescriptionList: [
+				{
+					"consultationDate": Date,
+
+					//par exemple: fièvre pour qu'on l'interpole dans les metadonnees
+					"situation": string,
+				}
+			]
+		}
+		
+		//details c'est une page de popover elle n'apparait pas dans le path
+		"route": "/doctor_coach/home/patient-list/patient-data/details/:prescription_id",
+
+		"data needed": {
+			prescriptionList: [
+				"medication": string[],
+				"details": string,
+			]
+		}
+			
+	}
+}
