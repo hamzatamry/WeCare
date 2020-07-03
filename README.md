@@ -28,7 +28,7 @@ ionic serve
 Head to http://localhost:8100 in your browser and you should hopefully see the app running :clap:.
 (Tap CTRL+SHIFT+I to open the web console and then CTRL+SHIFT+M to get a mobile view of the app)
 ## Built APK
-We've also got a pre-built, ready to test apk version to test on your android device: [DailyHealth.apk](http://www.mediafire.com/file/wcqdd1t7w1dqqol/app-debug.apk/file)
+We've also got a pre-built, ready to test apk version to test on your android device: [DailyHealth.apk](http://www.mediafire.com/file/8irxceksnqqmthy/app-debug.apk/file)
 ## About the backend
 It's ready to use with the current state of the app and is already deployed with the help of AWS Elastic Beanstalk. If you're using its source code, you'll need to specify the following environment:
 ```
