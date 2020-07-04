@@ -33,7 +33,9 @@ h1 {
     --background: var(--ion-color-primary) !important;
     ion-segment-button {
         --background-checked : var(--ion-color-secondary) !important;
-        
+    }
+    ion-label{
+        color : white !important;
     }
 }   
 

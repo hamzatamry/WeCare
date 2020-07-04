@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { LogOutComponent } from '../../patient/tabs/log-out/log-out.component';
+import { AuthService } from 'src/app/auth/auth.service';
+import { Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-tabs',
@@ -9,7 +11,12 @@ import { LogOutComponent } from '../../patient/tabs/log-out/log-out.component';
 })
 export class TabsPage implements OnInit {
 
-  constructor(public popoverController: PopoverController) { }
+  public selectedPath = "";
+  constructor(private popoverController: PopoverController,private router: Router) {
+    this.router.events.subscribe((event: RouterEvent) => {
+      this.selectedPath = event.url;
+    })
+   }
 
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
@@ -23,4 +30,6 @@ export class TabsPage implements OnInit {
 
   ngOnInit() {
   }
+
+
 }

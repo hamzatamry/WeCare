@@ -44,11 +44,7 @@ export class LoginPage implements OnInit {
           loadingElement.dismiss();
           if (resData.profileSet) {
             if(role == 'patient')
-            {
-              console.log(1);
               this.navCtrl.navigateRoot('/patient');
-            }
-              
             else
               this.navCtrl.navigateRoot('/docteur_coach');
           }

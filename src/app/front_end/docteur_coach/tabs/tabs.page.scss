@@ -1,13 +1,17 @@
-ion-icon, ion-label {
-    color: white;
+ion-icon {
+    color:black;
 }
 
-ion-tabs {
-   
-    ion-tab-bar {
-        --background: var(--ion-color-primary);
-        ion-tab-button {
-            --ripple-color: white !important;
-        }
+ion-toolbar{
+    ion-icon{
+        color: white !important;
     }
-  }
+}
+
+ion-label{
+    padding-left: 10px;
+}
+
+.active-item{
+    border-left: 8px solid var(--ion-color-primary);
+}

@@ -1,9 +1,17 @@
 <!-- la partie header de la page d'accueil du patient contenant un titre -->
 <ion-header >
-  <ion-toolbar>
+  <ion-toolbar> 
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white;"></ion-menu-button>
+    </ion-buttons>
     <ion-title style="text-align: center;">
       Home
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="presentPopover()">
+        <ion-icon  name="exit-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

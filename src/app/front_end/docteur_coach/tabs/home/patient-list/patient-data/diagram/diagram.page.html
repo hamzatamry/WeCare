@@ -281,7 +281,7 @@
     </ion-slide>
   </ion-slides>
    
-    <ion-slides>
+    <ion-slides pager="true">
       <ion-slide>
          <!-------------------------------------------- heartBeats Chart ------------------------------>
 
@@ -407,7 +407,7 @@
     </ion-slides>
 </ion-content>
 
-<ion-header>
+<ion-footer>
   <ion-toolbar class="toolbar">
     <ion-segment class="days" [disabled]="isFetching" #segment scrollable [(ngModel)]="day" (ionChange)="changeData(segment.value);stepsPerDar=calculateTotalSteps();">
       <ion-segment-button value="1"><ion-label>Monday</ion-label></ion-segment-button>
@@ -419,4 +419,4 @@
       <ion-segment-button value="0"><ion-label>Sunday</ion-label></ion-segment-button>
     </ion-segment>
   </ion-toolbar>
-</ion-header>
+</ion-footer>

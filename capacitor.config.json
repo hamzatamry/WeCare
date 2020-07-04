@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.pfa",
-  "appName": "Health",
+  "appName": "weCare",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

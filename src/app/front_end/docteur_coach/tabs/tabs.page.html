@@ -1,18 +1,53 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="home">
-      <ion-icon name="home-outline"></ion-icon>
-      <ion-label>Home</ion-label>
-    </ion-tab-button>
+<ion-menu #menu contentId="content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button>
+          <ion-icon name="fitness-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title style="text-align: center;">Menu</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="menu.close()">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
 
-    <ion-tab-button tab="profile">
-      <ion-icon name="person-outline"></ion-icon>
-      <ion-label>Profile</ion-label>
-    </ion-tab-button>
+    </ion-toolbar>
+    
+    <div>
+      <img src="../../../../assets/weCare.jpg">
+    </div>
+  </ion-header>
 
-    <ion-tab-button (click)="presentPopover()">
-      <ion-icon name="log-out-outline"></ion-icon>
-      <ion-label>Logout</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
+  <ion-content>
+    <ion-list>
+      <ion-menu-toggle auto-hide="false">
+        <ion-item button routerLink="/docteur_coach/tabs/home" routerDirection="root" [class.active-item]=" selectedPath === '/docteur_coach/tabs/home' ">
+          <ion-icon name="home-outline"></ion-icon>
+          <ion-label>home</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle auto-hide="false">
+        <ion-item button routerLink="/docteur_coach/tabs/home/profil" routerDirection="root" [class.active-item]=" selectedPath === '/docteur_coach/tabs/home/profil' ">
+          <ion-icon name="person-circle-outline"></ion-icon>
+          <ion-label>profile</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle auto-hide="false">
+        <ion-item button routerLink="/docteur_coach/tabs/home/patient-list" routerDirection="root" [class.active-item]=" selectedPath === '/docteur_coach/tabs/home/patient-list' ">
+          <ion-icon name="list-outline"></ion-icon> 
+          <ion-label>patients list</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle auto-hide="false">
+        <ion-item button (click)="presentPopover()">
+          <ion-icon name="exit-outline"></ion-icon>
+          <ion-label>Logout</ion-label> 
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-router-outlet id="content" main></ion-router-outlet>

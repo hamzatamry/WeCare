@@ -8,6 +8,11 @@ import { RoleGuard } from 'src/app/role.guard';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'tabs/countdown',
+    pathMatch: 'full' 
+  },
+  {
     path: 'tabs',
     component: TabsPage,
     children: [
@@ -25,11 +30,7 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: '',
-    redirectTo: 'tabs/home',
-    pathMatch: 'full' 
-  }
+  
 ];
 
 @NgModule({
