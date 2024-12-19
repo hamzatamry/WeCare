@@ -35,7 +35,7 @@
     "chartjs-plugin-zoom": "^0.7.7",
     "core-js": "^3.6.5",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.9.13",
     "multer": "^1.4.2",
     "ng-circle-progress": "^1.5.1",
